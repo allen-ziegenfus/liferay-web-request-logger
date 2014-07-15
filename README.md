@@ -2,9 +2,15 @@
 
 *liferay-request-dumper*
 
-This project provides a Liferay Portal servlet filter that logs all web requests and responses messages via the Liferay Portal logging framework.
+This project provides a Liferay Portal Request Dumper Filter.
 
-NOTE: The servlet filter is only compatible with Servlet API 3.0+
+The Request Dumper Filter is based on the Apache Tomcat 7.x Request Dumper Filter and implemented using the Liferay Portal 6.1.x Servlet Filter framework.
+
+The Request Dumper Filter was developed to work around classloading and logging configuration issues with using the default Apache Tomcat 7.x Request Dumper Filter with Liferay Portal 6.1.x.
+
+This Request Dumper Filter logs messages via the Liferay Portal 6.1.x logging framework.
+
+NOTE: The Request Dumper Filter is only compatible with Servlet API 3.0+ and requires a Servlet Container that supports Servlet API 3.0+ such as Apache Tomcat 7.x that is used with Lifereay Portal 6.1 CE GA2+ or Liferay Portal 6.1 EE GA2+.
 
 
 ## Supported Products
@@ -77,7 +83,7 @@ Step 2. Enable or disable Liferay Request Dumper in portal properties.
 Edit file “LIFERAY_HOME/portal-ext.properties”.
 
     # Enable RequestDumperFilter
-       au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter=true
+    au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter=true
 
     # Disable RequestDumperFilter
     au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter=false
