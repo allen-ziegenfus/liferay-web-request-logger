@@ -2,15 +2,17 @@
 
 *liferay-request-dumper*
 
-This project provides a Liferay Portal Request Dumper Filter.
+This project provides a Liferay Portal Request Dumper Filter hook plugin.
 
-The Request Dumper Filter is based on the Apache Tomcat 7.x Request Dumper Filter and implemented using the Liferay Portal 6.1.x Servlet Filter framework.
+The Request Dumper Filter is based on the [Apache Tomcat 7.x Request Dumper Filter ](http://tomcat.apache.org/tomcat-7.0-doc/config/filter.html#Request_Dumper_Filter "The Request Dumper Filter is based on the [Apache Tomcat 7.x Request Dumper Filter") and implemented using the Liferay Portal 6.1.x Servlet Filter framework.
 
-The Request Dumper Filter was developed to work around classloading and logging configuration issues with using the default Apache Tomcat 7.x Request Dumper Filter with Liferay Portal 6.1.x.
+The Request Dumper Filter was developed to work around class/resource loading and logging configuration issues when using the default Apache Tomcat 7.x Request Dumper Filter with Liferay Portal 6.1.x.
 
-This Request Dumper Filter logs messages via the Liferay Portal 6.1.x logging framework.
+The Request Dumper Valve in Apache Tomcat 6.x (TC 6.x) was replaced by the Request Dumper Filter in Apache Tomcat 7.x (TC 7.x). The Request Dumper Valve (TC 6.x) worked seamlessly with Liferay Portal 6.0.x, but the Request Dumper Filter (TC 7.x) does not work with Liferay Portal 6.1.x, hence the need for the Liferay Portal Request Dumper Filter.
 
-NOTE: The Request Dumper Filter is only compatible with Servlet API 3.0+ and requires a Servlet Container that supports Servlet API 3.0+ such as Apache Tomcat 7.x that is used with Lifereay Portal 6.1 CE GA2+ or Liferay Portal 6.1 EE GA2+.
+The Request Dumper Filter logs messages via the Liferay Portal 6.1.x logging framework, which normally delegates to Apache Log4j.
+
+NOTE: The Request Dumper Filter is only compatible with Servlet API 3.0+ and requires a Servlet Container that supports Servlet API 3.0+ such as Apache Tomcat 7.x that is often used with Liferay Portal 6.1 CE GA2+ or Liferay Portal 6.1 EE GA2+.
 
 
 ## Supported Products
@@ -34,49 +36,9 @@ The latest release is available from [SourceForge - Liferay Request Dumper](http
 
 Step 1. Configure Liferay Portal logging for Liferay Request Dumper.
 
-Step 1.1. Create or update log4j settings file. 
+Update logging category “au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter” in “portal-log4j-ext.xml” file and/or via Liferay Portal Control Panel.
 
-NOTE: For a Liferay Portal + Tomcat bundle the log4j settings file is located at 
-"LIFERAY_HOME/tomcat-xxx/lib/ext/META-INF/portal-log4j-ext.xml".
-
-Sample “portal-log4j-ext.xml”
-
-    <?xml version="1.0"?>
-    <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-
-    <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
-
-            <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
-                    <layout class="org.apache.log4j.EnhancedPatternLayout">
-                            <param name="ConversionPattern" value="%d{ISO8601}{Australia/Perth} %-5p [%t][%c{1}:%L] %m%n" />
-                    </layout>
-            </appender>
-
-             <appender name="FILE" class="org.apache.log4j.rolling.RollingFileAppender">
-                    <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-                            <param name="FileNamePattern" value="@liferay.home@/logs/liferay@spi.id@.%d{yyyy-MM-dd}.log" />
-                    </rollingPolicy>
-
-                    <layout class="org.apache.log4j.EnhancedPatternLayout">
-                            <param name="ConversionPattern" value="%d{ISO8601}{Australia/Perth} %-5p [%t][%c{1}:%L] %m%n" />
-                    </layout>
-            </appender>
-
-            <category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter">
-                    <priority value="ALL" />
-            </category>
-
-            <root>
-                    <priority value="INFO" />
-                    <appender-ref ref="CONSOLE" />
-                    <appender-ref ref="FILE" />
-            </root>
-
-    </log4j:configuration>
-
-Step 1.2. Copy log4j.dtd to same folder as portal-log4j-ext.xml
-
-NOTE: For Liferay Portal + Tomcat bundle, the log4j.dtd file can be found in file “LIFERAY_HOME/tomcat-xxx/webapps/ROOT/WEB-INF/lib/portal-impl.jar”.
+Refer to sample [portal-log4j-ext.xml](conf//liferay-portal/tomcat/lib/ext/META-INF/portal-log4j-ext.xml "portal-log4j-ext.xml") and associated [log4j.dtd](conf//liferay-portal/tomcat/lib/ext/META-INF/log4j.dtd “log4j.dtd”), which are copied to folder “LIFERAY_HOME/tomcat/lib/ext/META-INF”.
 
 Step 2. Enable or disable Liferay Request Dumper in portal properties.
 
@@ -87,6 +49,41 @@ Edit file “LIFERAY_HOME/portal-ext.properties”.
 
     # Disable RequestDumperFilter
     au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter=false
+
+Step 3. Review Liferay Portal and/or Apache Tomcat log files.
+
+Sample Output (Apache Tomcat)
+
+    2014-04-30 16:37:20,660 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1 START TIME        =30-Apr-2014 08:37:20
+    2014-04-30 16:37:20,661 INFO  [http-bio-9080-exec-1][RequestDumperFilter:101] Begin filter for request dumper at URL http://localhost:9080/web/guest
+    2014-04-30 16:37:20,661 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1         requestURI=/web/guest
+    2014-04-30 16:37:20,662 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1           authType=null
+    2014-04-30 16:37:20,662 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1  characterEncoding=UTF-8
+    2014-04-30 16:37:20,663 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1      contentLength=-1
+    2014-04-30 16:37:20,663 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1        contentType=null
+    2014-04-30 16:37:20,663 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1        contextPath=
+    2014-04-30 16:37:20,664 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1             header=cache-control=no-cache
+    2014-04-30 16:37:20,665 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1             header=pragma=no-cache
+    2014-04-30 16:37:20,665 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1             header=user-agent=Java/1.6.0_35
+    2014-04-30 16:37:20,666 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1             header=host=localhost:9080
+    2014-04-30 16:37:20,666 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1             header=accept=text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+    2014-04-30 16:37:20,666 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1             header=connection=keep-alive
+    2014-04-30 16:37:20,667 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1             locale=en_US
+    2014-04-30 16:37:20,667 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1             method=GET
+    2014-04-30 16:37:20,668 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1           pathInfo=/guest
+    2014-04-30 16:37:20,668 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1           protocol=HTTP/1.1
+    2014-04-30 16:37:20,668 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1        queryString=null
+    2014-04-30 16:37:20,669 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1         remoteAddr=127.0.0.1
+    2014-04-30 16:37:20,669 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1         remoteHost=127.0.0.1
+    2014-04-30 16:37:20,669 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1         remoteUser=null
+    2014-04-30 16:37:20,670 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1 requestedSessionId=null
+    2014-04-30 16:37:20,670 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1             scheme=http
+    2014-04-30 16:37:20,671 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1         serverName=localhost
+    2014-04-30 16:37:20,671 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1         serverPort=9080
+    2014-04-30 16:37:20,671 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1        servletPath=/web
+    2014-04-30 16:37:20,672 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1           isSecure=false
+    2014-04-30 16:37:20,672 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1 ------------------=--------------------------------------------
+    2014-04-30 16:37:20,673 DEBUG [http-bio-9080-exec-1][RequestDumperFilter:159] [http-bio-9080-exec-1]=> au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter /web/guest
 
 ## Building
 
@@ -151,3 +148,11 @@ Deploy "liferay-request-dumper-A.B.C.war" to "LIFERAY_HOME/deploy" folder.
 ## Project Team
 
 * Tim Telcik - tim.telcik@permeance.com.au
+
+## References
+
+ * http://tomcat.apache.org/tomcat-7.0-doc/config/filter.html#Request_Dumper_Filter
+ * https://tomcat.apache.org/tomcat-7.0-doc/api/org/apache/catalina/filters/RequestDumperFilter.html
+ * http://grepcode.com/file/repo1.maven.org/maven2/org.apache.tomcat.embed/tomcat-embed-core/7.0.0/org/apache/catalina/filters/RequestDumperFilter.java
+ * http://www.liferay.com/documentation/liferay-portal/6.1/development/-/ai/other-hooks
+ * https://github.com/liferay/liferay-plugins/tree/master/hooks/sample-servlet-filter-hook
