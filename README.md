@@ -54,7 +54,13 @@ Edit file “LIFERAY_HOME/portal-ext.properties”.
     # Disable RequestDumperFilter
     au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter=false
 
-### Step 3. Review Liferay Portal and/or Apache Tomcat log files.
+### Step 3. Deploy Liferay Request Dumper to Liferay Portal
+
+eg. Liferay Portal + Apache Tomcat Bundle
+
+    % cp liferay-request-dumper-hook-XXX.war LIFERAY_HOME/deploy
+
+### Step 4. Review Liferay Portal and/or Apache Tomcat log files.
 
 #### Sample Output (Apache Tomcat)
 
@@ -99,7 +105,8 @@ Edit file “LIFERAY_HOME/portal-ext.properties”.
 
     $ md work
     $ cd work
-    $ md master
+    % md -p liferay-request-dumper/master
+    % cd liferay-request-dumper/master
     $ git clone https://github.com/permeance/liferay-request-dumper
     Cloning into 'liferay-request-dumper'...
     remote: Counting objects: 518, done.
@@ -115,8 +122,8 @@ Edit file “LIFERAY_HOME/portal-ext.properties”.
 
     % md work
     % cd work
-    % md -p liferay-request-dumper/branches/6.1.x
-    % cd liferay-request-dumper/branches/6.1.x
+    % md -p liferay-request-dumper/6.1.x
+    % cd liferay-request-dumper/6.1.x
     % git clone https://github.com/permeance/liferay-request-dumper
     Cloning into 'liferay-request-dumper'...
     remote: Counting objects: 475, done.
@@ -137,16 +144,7 @@ Edit file “LIFERAY_HOME/portal-ext.properties”.
 
     % mvn -U clean package
 
-This will build "liferay-request-dumper-A.B.C.war" in the “target” folder.
-
-
-## Installation
-
-### Liferay Portal + Apache Tomcat Bundle
-
-eg.
-
-Deploy "liferay-request-dumper-A.B.C.war" to "LIFERAY_HOME/deploy" folder.
+This will build "liferay-request-dumper-hook-XXX.war" in the “target” folder.
 
 
 ## Project Team
@@ -160,3 +158,4 @@ Deploy "liferay-request-dumper-A.B.C.war" to "LIFERAY_HOME/deploy" folder.
  * http://grepcode.com/file/repo1.maven.org/maven2/org.apache.tomcat.embed/tomcat-embed-core/7.0.0/org/apache/catalina/filters/RequestDumperFilter.java
  * http://www.liferay.com/documentation/liferay-portal/6.1/development/-/ai/other-hooks
  * https://github.com/liferay/liferay-plugins/tree/master/hooks/sample-servlet-filter-hook
+
