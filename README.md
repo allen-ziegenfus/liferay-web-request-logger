@@ -38,13 +38,13 @@ The latest release is available from [SourceForge - Liferay Request Dumper](http
 
 ## Usage
 
-Step 1. Configure Liferay Portal logging for Liferay Request Dumper.
+### Step 1. Configure Liferay Portal logging for Liferay Request Dumper.
 
 Update logging category “au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter” in “portal-log4j-ext.xml” file and/or via Liferay Portal Control Panel.
 
-Refer to sample [portal-log4j-ext.xml](conf//liferay-portal/tomcat/lib/ext/META-INF/portal-log4j-ext.xml "portal-log4j-ext.xml") and associated [log4j.dtd](conf//liferay-portal/tomcat/lib/ext/META-INF/log4j.dtd “log4j.dtd”), which are copied to folder “LIFERAY_HOME/tomcat/lib/ext/META-INF”.
+Refer to sample [portal-log4j-ext.xml](conf/liferay-portal/tomcat/lib/ext/META-INF/portal-log4j-ext.xml "portal-log4j-ext.xml") and associated [log4j.dtd](conf/liferay-portal/tomcat/lib/ext/META-INF/log4j.dtd "log4j.dtd"), which should be copied to folder “LIFERAY_HOME/tomcat/lib/ext/META-INF”.
 
-Step 2. Enable or disable Liferay Request Dumper in portal properties.
+### Step 2. Enable or disable Liferay Request Dumper in portal properties.
 
 Edit file “LIFERAY_HOME/portal-ext.properties”.
 
@@ -54,9 +54,9 @@ Edit file “LIFERAY_HOME/portal-ext.properties”.
     # Disable RequestDumperFilter
     au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter=false
 
-Step 3. Review Liferay Portal and/or Apache Tomcat log files.
+### Step 3. Review Liferay Portal and/or Apache Tomcat log files.
 
-Sample Output (Apache Tomcat)
+#### Sample Output (Apache Tomcat)
 
     2014-04-30 16:37:20,660 INFO  [http-bio-9080-exec-1][RequestDumperFilter:258] http-bio-9080-exec-1 START TIME        =30-Apr-2014 08:37:20
     2014-04-30 16:37:20,661 INFO  [http-bio-9080-exec-1][RequestDumperFilter:101] Begin filter for request dumper at URL http://localhost:9080/web/guest
@@ -91,9 +91,9 @@ Sample Output (Apache Tomcat)
 
 ## Building
 
-Step 1. Checkout source from GitHub project
+### Step 1. Checkout source from GitHub project
 
-Step 1.1. Checkout master from GitHub project
+#### Step 1.1. Checkout master from GitHub project
 
     NOTE: GitHub master and branch 6.1.x should always be the same.
 
@@ -109,7 +109,7 @@ Step 1.1. Checkout master from GitHub project
     Resolving deltas: 100% (173/173), done.
     Checking connectivity... done
 
-Step 1.2. Checkout branch 6.1.x from GitHub project
+#### Step 1.2. Checkout branch 6.1.x from GitHub project
 
     NOTE: This sample shows checkout for branch 6.1.x. 
 
@@ -133,11 +133,11 @@ Step 1.2. Checkout branch 6.1.x from GitHub project
     # On branch 6.1.x
     nothing to commit, working directory clean
 
-Step 2. Build and package
+### Step 2. Build and package
 
     % mvn -U clean package
 
-This will build "liferay-request-dumper-A.B.C.war" in the targets tolder.
+This will build "liferay-request-dumper-A.B.C.war" in the “target” folder.
 
 
 ## Installation
