@@ -21,9 +21,10 @@ The Request Dumper Filter logs messages via the Liferay Portal 6.1.x logging fra
 
 ## Supported Products
 
-### GitHub Project Master
+### GitHub Project Master and Branch 6.2.x
 
-* Equivalent to branch 6.1.x
+* Liferay Portal 6.2 CE : 6.2 CE GA1 (6.2.0+)
+* Liferay Portal 6.2 EE : 6.2 EE GA1 (6.2.10+)
 
 ### GitHub Project Branch 6.1.x
 
@@ -101,7 +102,7 @@ eg. Liferay Portal + Apache Tomcat Bundle
 
 #### Step 1.1. Checkout master from GitHub project
 
-    NOTE: GitHub master and branch 6.1.x should always be the same.
+    NOTE: GitHub master and branch 6.2.x should always be the same.
 
     $ md work
     $ cd work
@@ -116,9 +117,9 @@ eg. Liferay Portal + Apache Tomcat Bundle
     Resolving deltas: 100% (173/173), done.
     Checking connectivity... done
 
-#### Step 1.2. Checkout branch 6.1.x from GitHub project
+#### Step 1.2. Checkout branch 6.1.x or 6.2.x from GitHub project
 
-    NOTE: This sample shows checkout for branch 6.1.x. 
+    NOTE: This sample shows checkout for branch 6.1.x. The same process applies for branch 6.2.x.
 
     % md work
     % cd work
