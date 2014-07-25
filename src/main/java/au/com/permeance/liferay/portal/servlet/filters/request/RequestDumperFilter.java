@@ -147,9 +147,9 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
         doLog("START TIME        ", getTimestamp());
         
         if (sc != null) {
-            doLog("  servletContext serverInfo", ""+sc.getServerInfo());
-            doLog("  servletContext majorVersion", ""+sc.getMajorVersion());
-            doLog("  servletContext minorVersion", ""+sc.getMinorVersion());
+            doLog("  servletContext.serverInfo", ""+sc.getServerInfo());
+            doLog("  servletContext.majorVersion", ""+sc.getMajorVersion());
+            doLog("  servletContext.minorVersion", ""+sc.getMinorVersion());
         }
 
         if (hRequest == null) {
