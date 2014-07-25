@@ -18,12 +18,14 @@ package au.com.permeance.liferay.portal.servlet.filters.request;
 import au.com.permeance.liferay.portal.kernel.servlet.BasePortalFilter;
 
 import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +62,11 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
     private static final String NON_HTTP_REQ_MSG = "Not available. Non-HTTP request.";
     
 	private static final String NON_HTTP_RES_MSG = "Not available. Non-HTTP response.";
+	
+	private static final int SEFVLET_API_3_0_MAJOR_VERSION = 3;
+	
+	private static final int SEFVLET_API_3_0_MINOR_VERSION = 0;
+	
 
 	private static final ThreadLocal<Timestamp> timestamp = new ThreadLocal<Timestamp>() {
 		@Override
@@ -85,7 +92,7 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
 			filterEnabled = false;
 		}
 		else {
-			getLog().info("not yet not filtered; continue");
+			getLog().info("not yet filtered; continue");
 			filterEnabled = true;
 		}
 		
@@ -127,16 +134,24 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
         if (response instanceof HttpServletResponse) {
             hResponse = (HttpServletResponse) response;
         }		
-
-        // Log pre-service information
-        doLog("START TIME        ", getTimestamp());
-
+        
+        ServletContext sc = hRequest.getServletContext();
+        
 		String completeURL = HttpUtil.getCompleteURL(request);
 		
 		if (getLog().isInfoEnabled()) {
 			getLog().info("Begin filter for request dumper at URL " + completeURL);
 		}
+		
+        // Log pre-service information
+        doLog("START TIME        ", getTimestamp());
         
+        if (sc != null) {
+            doLog("  servletContext serverInfo", ""+sc.getServerInfo());
+            doLog("  servletContext majorVersion", ""+sc.getMajorVersion());
+            doLog("  servletContext minorVersion", ""+sc.getMinorVersion());
+        }
+
         if (hRequest == null) {
             doLog("        requestURI", NON_HTTP_REQ_MSG);
             doLog("          authType", NON_HTTP_REQ_MSG);
@@ -162,13 +177,25 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
                     doLog("            cookie", cookies[i].getName() +
                             "=" + cookies[i].getValue());
             }
-            Enumeration<String> hnames = hRequest.getHeaderNames();
-            while (hnames.hasMoreElements()) {
-                String hname = hnames.nextElement();
-                Enumeration<String> hvalues = hRequest.getHeaders(hname);
-                while (hvalues.hasMoreElements()) {
-                    String hvalue = hvalues.nextElement();
-                    doLog("            header", hname + "=" + hvalue);
+            if (doesServletContainerSupportServletAPI_3_0(sc)) {
+                Enumeration<String> hnames = hRequest.getHeaderNames();
+                while (hnames.hasMoreElements()) {
+                    String hname = hnames.nextElement();
+                    Enumeration<String> hvalues = hRequest.getHeaders(hname);
+                    while (hvalues.hasMoreElements()) {
+                        String hvalue = hvalues.nextElement();
+                        doLog("            header", hname + "=" + hvalue);
+                    }
+                }
+            } else {
+                Enumeration hnames = hRequest.getHeaderNames();
+                while (hnames.hasMoreElements()) {
+                    String hname = (String) hnames.nextElement();
+                    Enumeration<String> hvalues = hRequest.getHeaders(hname);
+                    while (hvalues.hasMoreElements()) {
+                        String hvalue = hvalues.nextElement();
+                        doLog("            header", hname + "=" + hvalue);
+                    }
                 }
             }
         }
@@ -253,12 +280,16 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
         if (hResponse == null) {
             doLog("            header", NON_HTTP_RES_MSG);
         } else {
-            Iterable<String> rhnames = hResponse.getHeaderNames();
-            for (String rhname : rhnames) {
-                Iterable<String> rhvalues = hResponse.getHeaders(rhname);
-                for (String rhvalue : rhvalues)
-                    doLog("            header", rhname + "=" + rhvalue);
-            }
+        	if (doesServletContainerSupportServletAPI_3_0(sc)) {
+                Iterable<String> rhnames = hResponse.getHeaderNames();
+                for (String rhname : rhnames) {
+                    Iterable<String> rhvalues = hResponse.getHeaders(rhname);
+                    for (String rhvalue : rhvalues)
+                        doLog("            header", rhname + "=" + rhvalue);
+                }
+        	} else {
+        		doLog("Unable to log response headers; Servlet Container does not support Servlet API 3.0.", StringPool.BLANK);
+        	}
         }
 
         if (hRequest == null) {
@@ -292,7 +323,6 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
         sb.append('=');
         sb.append(value);
         getLog().info(sb.toString());
-        // _log.info(sb.toString());
     }
 
     
@@ -318,7 +348,21 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
         }
     }	
 
-	
-	// private static Log _log = LogFactoryUtil.getLog(RequestDumperFilter.class);
+    
+    private static boolean doesServletContainerSupportServletAPI_3_0( ServletContext sc ) {
+    	
+    	boolean result = false;
+    	
+    	if (sc != null) {
+        	int majorVersion = sc.getMajorVersion();
+        	int minorVersion = sc.getMinorVersion();
+
+        	if ((majorVersion >= SEFVLET_API_3_0_MAJOR_VERSION) && (minorVersion >= SEFVLET_API_3_0_MINOR_VERSION)) {
+        		result = true;
+        	}
+    	}
+    	
+    	return result;
+    }    
 
 }
