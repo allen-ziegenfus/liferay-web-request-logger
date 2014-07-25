@@ -2,22 +2,19 @@
 
 *liferay-request-dumper*
 
-This project provides a Liferay Portal Request Dumper Filter hook plugin.
+This project provides a Liferay Portal Request Dumper Filter that logs all HTTP web requests and responses via the Liferay Portal logging framework.
 
 ## Overview
 
-The Request Dumper Filter is based on the [Apache Tomcat 7.x Request Dumper Filter ](http://tomcat.apache.org/tomcat-7.0-doc/config/filter.html#Request_Dumper_Filter "The Request Dumper Filter is based on the [Apache Tomcat 7.x Request Dumper Filter") and implemented using the Liferay Portal 6.1.x Servlet Filter framework.
+The Liferay Portal Request Dumper Filter is based on the [Apache Tomcat 7.x Request Dumper Filter ](http://tomcat.apache.org/tomcat-7.0-doc/config/filter.html#Request_Dumper_Filter "The Request Dumper Filter is based on the [Apache Tomcat 7.x Request Dumper Filter") and implemented using the Liferay Portal 6.1.x Servlet Filter framework.
 
-The Request Dumper Filter was developed to work around class/resource loading and logging configuration issues when using the default Apache Tomcat 7.x Request Dumper Filter with Liferay Portal 6.1.x.
+The Liferay Request Dumper Filter was developed to work around class/resource loading and logging configuration issues when using the default Apache Tomcat 7.x Request Dumper Filter with Liferay Portal 6.1.x.
 
-NOTE: The Request Dumper Filter is only compatible with Servlet API 3.0+ and requires a Servlet Container that supports Servlet API 3.0+ such as Apache Tomcat 7.x that is often used with Liferay Portal 6.1 CE GA2+ or Liferay Portal 6.1 EE GA2+.
+The Request Dumper Filter is compatible with Servlet Containers supporting Servlet API 2.5 or 3.0 (e.g. Apache Tomcat 6.x or 7.x).
 
 ### Background
 
-The Request Dumper Valve in Apache Tomcat 6.x (TC 6.x) was replaced by the Request Dumper Filter in Apache Tomcat 7.x (TC 7.x). The Request Dumper Valve (TC 6.x) worked seamlessly with Liferay Portal 6.0.x, but the Request Dumper Filter (TC 7.x) does not work with Liferay Portal 6.1.x, hence the need for the Liferay Portal Request Dumper Filter.
-
-The Request Dumper Filter logs messages via the Liferay Portal 6.1.x logging framework, which normally delegates to Apache Log4j.
-
+The Request Dumper Valve in Apache Tomcat 6.x (TC 6.x) was replaced by the Request Dumper Filter in Apache Tomcat 7.x (TC 7.x). The Request Dumper Valve (TC 6.x) worked seamlessly with Liferay Portal 6.0.x, but the Request Dumper Filter (TC 7.x) does not work with Liferay Portal 6.1.x, hence the need for the Liferay Request Dumper Filter.
 
 ## Supported Products
 
