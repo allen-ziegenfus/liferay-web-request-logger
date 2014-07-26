@@ -46,9 +46,8 @@ Add or update logging category for RequestLoggerFilter using the Liferay Portal 
 
 * Add or update log category for RequestLoggerFilter
 
-    Category Name: au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter
-
-    Log Level: ALL
+     Category Name: au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter
+     Log Level: ALL
 
 * NOTE: This approach is temporary and is only active while the Liferay Portal instance is running.
 
@@ -58,9 +57,9 @@ Add or update logging category for RequestLoggerFilter using the Liferay Portal 
 
 * Refer to sample [portal-log4j-ext.xml](conf/liferay-portal/tomcat/lib/ext/META-INF/portal-log4j-ext.xml "portal-log4j-ext.xml") and associated [log4j.dtd](conf/liferay-portal/tomcat/lib/ext/META-INF/log4j.dtd "log4j.dtd"), which should be copied to folder “LIFERAY_HOME/tomcat/lib/ext/META-INF”.
 
-    &lt;category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter"&gt;
-        &lt;priority value="ALL" /&gt;
-    &lt;/category&gt;
+     &lt;category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter"&gt;
+         &lt;priority value="ALL" /&gt;
+     &lt;/category&gt;
 
 * NOTE: This approach is persistent and will remain between stopping and starting the Liferay Portal instance.
 
@@ -70,17 +69,17 @@ Add or update logging category for RequestLoggerFilter using the Liferay Portal 
 
 * Enable RequestLoggerFilter
 
-    au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter=true
+     au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter=true
 
 * Disable RequestLoggerFilter
 
-    au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter=false
+     au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter=false
 
 ### Step 3. Deploy Liferay Request Logger hook plugin to Liferay Portal
 
 * Deploy to Liferay Portal + Apache Tomcat Bundle
 
-    % cp liferay-request-logger-hook-XXX.war LIFERAY_HOME/deploy
+     % cp liferay-request-logger-hook-XXX.war LIFERAY_HOME/deploy
 
 ### Step 4. Review Liferay Portal and/or Apache Tomcat log files.
 
