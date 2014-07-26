@@ -32,32 +32,29 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * Request Dumper Filter.
+ * Request Logger Filter.
  * 
- * This Request Dumper Filter is based on the Apache Tomcat 7.x Request Dumper Filter 
+ * The Request Logger Filter is based on the Apache Tomcat 7.x Request Dumper Filter 
  * and implemented using the Liferay Portal 6.1.x Servlet Filter framework.
+ * It logs messages via the Liferay Portal 6.1.x logging framework.
  * 
- * This Request Dumper Filter was developed to work around classloading and logging configuration
+ * This Request Logger Filter was developed to work around classloading and logging configuration
  * issues with using the default Apache Tomcat 7.x Request Dumper Filter with Liferay Portal 6.1.x. 
- * 
- * This Request Dumper Filter logs messages via the Liferay Portal 6.1.x logging framework.
  * 
  * @author Craig R. McClanahan
  * @author Tim Telcik <tim.telcik@permeance.com.au>
  * 
  * @see http://tomcat.apache.org/tomcat-7.0-doc/config/filter.html#Request_Dumper_Filter
  * @see https://tomcat.apache.org/tomcat-7.0-doc/api/org/apache/catalina/filters/RequestDumperFilter.html
- * 
  * @see http://grepcode.com/file/repo1.maven.org/maven2/org.apache.tomcat.embed/tomcat-embed-core/7.0.0/org/apache/catalina/filters/RequestDumperFilter.java
  * @see http://www.liferay.com/documentation/liferay-portal/6.1/development/-/ai/other-hooks
  * @see https://github.com/liferay/liferay-plugins/tree/master/hooks/sample-servlet-filter-hook
- * 
  * @see https://tomcat.apache.org/tomcat-7.0-doc/api/org/apache/catalina/filters/RequestDumperFilter.html
  * @see BasePortalFilter
  */
-public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.servlet.BasePortalFilter {
+public class RequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.servlet.BasePortalFilter {
 
-	public static final String SKIP_FILTER = RequestDumperFilter.class.getName() + "SKIP_FILTER";
+	public static final String SKIP_FILTER = RequestLoggerFilter.class.getName() + "SKIP_FILTER";
 	
     private static final String NON_HTTP_REQ_MSG = "Not available. Non-HTTP request.";
     
@@ -76,7 +73,7 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
 	};
 	
 	
-	public RequestDumperFilter() {
+	public RequestLoggerFilter() {
 		super();
 	}
 
@@ -88,15 +85,15 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
 		boolean filterEnabled = false;
 		
 		if (isAlreadyFiltered(request)) {
-			getLog().info("already filtered; skip");
+			getLog().info("Request already filtered; skip");
 			filterEnabled = false;
 		}
 		else {
-			getLog().info("not yet filtered; continue");
+			getLog().info("Request not yet filtered; continue");
 			filterEnabled = true;
 		}
 		
-		getLog().info("filterEnabled: " + filterEnabled);
+		getLog().info("Filter enabled: " + filterEnabled);
 		return filterEnabled;
 	}
 	
@@ -112,9 +109,9 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
 
 
 	/**
-	 * This processFilter method is essentially a clone 
-	 * of Tomcat's RequestDumperFilter#doFilter(ServletRequest,ServletResponse,FilterChain)
-	 * merged with Liferay Portal's hook filter mechanism.
+	 * This processFilter method is derived from 
+	 * the Apache Tomcat RequestDumperFilter#doFilter(ServletRequest,ServletResponse,FilterChain)
+	 * and merged with the Liferay Porta servlet filter framework.
 	 * 
 	 * @see http://grepcode.com/file/repo1.maven.org/maven2/org.apache.tomcat.embed/tomcat-embed-core/7.0.0/org/apache/catalina/filters/RequestDumperFilter.java
 	 */
@@ -140,41 +137,40 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
 		String completeURL = HttpUtil.getCompleteURL(request);
 		
 		if (getLog().isInfoEnabled()) {
-			getLog().info("Begin filter for request dumper at URL " + completeURL);
+			getLog().info("Start filter for request logger at URL " + completeURL);
 		}
 		
         // Log pre-service information
-        doLog("START TIME        ", getTimestamp());
+        doLog("FILTER START TIME", getTimestamp());
         
         if (sc != null) {
-            doLog("  servletContext.serverInfo", ""+sc.getServerInfo());
-            doLog("  servletContext.majorVersion", ""+sc.getMajorVersion());
-            doLog("  servletContext.minorVersion", ""+sc.getMinorVersion());
+            doLog("servletContext.serverInfo", ""+sc.getServerInfo());
+            doLog("servletContext.majorVersion", ""+sc.getMajorVersion());
+            doLog("servletContext.minorVersion", ""+sc.getMinorVersion());
         }
 
         if (hRequest == null) {
-            doLog("        requestURI", NON_HTTP_REQ_MSG);
-            doLog("          authType", NON_HTTP_REQ_MSG);
+            doLog("requestURI", NON_HTTP_REQ_MSG);
+            doLog("authType", NON_HTTP_REQ_MSG);
         } else {
-            doLog("        requestURI", hRequest.getRequestURI());
-            doLog("          authType", hRequest.getAuthType());
+            doLog("requestURI", hRequest.getRequestURI());
+            doLog("authType", hRequest.getAuthType());
         }
         
-        doLog(" characterEncoding", request.getCharacterEncoding());
-        doLog("     contentLength",
-                Integer.valueOf(request.getContentLength()).toString());
-        doLog("       contentType", request.getContentType());
+        doLog("characterEncoding", request.getCharacterEncoding());
+        doLog("contentLength", Integer.valueOf(request.getContentLength()).toString());
+        doLog("contentType", request.getContentType());
         
         if (hRequest == null) {
-            doLog("       contextPath", NON_HTTP_REQ_MSG);
-            doLog("            cookie", NON_HTTP_REQ_MSG);
-            doLog("            header", NON_HTTP_REQ_MSG);
+            doLog("contextPath", NON_HTTP_REQ_MSG);
+            doLog("cookie", NON_HTTP_REQ_MSG);
+            doLog("header", NON_HTTP_REQ_MSG);
         } else {
-            doLog("       contextPath", hRequest.getContextPath());
+            doLog("contextPath", hRequest.getContextPath());
             Cookie cookies[] = hRequest.getCookies();
             if (cookies != null) {
                 for (int i = 0; i < cookies.length; i++)
-                    doLog("            cookie", cookies[i].getName() +
+                    doLog("cookie", cookies[i].getName() +
                             "=" + cookies[i].getValue());
             }
             if (doesServletContainerSupportServletAPI_3_0(sc)) {
@@ -184,7 +180,7 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
                     Enumeration<String> hvalues = hRequest.getHeaders(hname);
                     while (hvalues.hasMoreElements()) {
                         String hvalue = hvalues.nextElement();
-                        doLog("            header", hname + "=" + hvalue);
+                        doLog("header", hname + "=" + hvalue);
                     }
                 }
             } else {
@@ -194,18 +190,18 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
                     Enumeration<String> hvalues = hRequest.getHeaders(hname);
                     while (hvalues.hasMoreElements()) {
                         String hvalue = hvalues.nextElement();
-                        doLog("            header", hname + "=" + hvalue);
+                        doLog("header", hname + "=" + hvalue);
                     }
                 }
             }
         }
         
-        doLog("            locale", request.getLocale().toString());
+        doLog("locale", request.getLocale().toString());
         
         if (hRequest == null) {
-            doLog("            method", NON_HTTP_REQ_MSG);
+            doLog("method", NON_HTTP_REQ_MSG);
         } else {
-            doLog("            method", hRequest.getMethod());
+            doLog("method", hRequest.getMethod());
         }
         
         Enumeration<String> pnames = request.getParameterNames();
@@ -219,73 +215,72 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
                     result.append(", ");
                 result.append(pvalues[i]);
             }
-            doLog("         parameter", result.toString());
+            doLog("parameter", result.toString());
         }
         
         if (hRequest == null) {
-            doLog("          pathInfo", NON_HTTP_REQ_MSG);
+            doLog("pathInfo", NON_HTTP_REQ_MSG);
         } else {
-            doLog("          pathInfo", hRequest.getPathInfo());
+            doLog("pathInfo", hRequest.getPathInfo());
         }
         
-        doLog("          protocol", request.getProtocol());
+        doLog("protocol", request.getProtocol());
         
         if (hRequest == null) {
-            doLog("       queryString", NON_HTTP_REQ_MSG);
+            doLog("queryString", NON_HTTP_REQ_MSG);
         } else {
-            doLog("       queryString", hRequest.getQueryString());
+            doLog("queryString", hRequest.getQueryString());
         }
         
-        doLog("        remoteAddr", request.getRemoteAddr());
-        doLog("        remoteHost", request.getRemoteHost());
+        doLog("remoteAddr", request.getRemoteAddr());
+        doLog("remoteHost", request.getRemoteHost());
         
         if (hRequest == null) {
-            doLog("        remoteUser", NON_HTTP_REQ_MSG);
+            doLog("remoteUser", NON_HTTP_REQ_MSG);
             doLog("requestedSessionId", NON_HTTP_REQ_MSG);
         } else {
-            doLog("        remoteUser", hRequest.getRemoteUser());
+            doLog("remoteUser", hRequest.getRemoteUser());
             doLog("requestedSessionId", hRequest.getRequestedSessionId());
         }
         
-        doLog("            scheme", request.getScheme());
-        doLog("        serverName", request.getServerName());
-        doLog("        serverPort",
-                Integer.valueOf(request.getServerPort()).toString());
+        doLog("scheme", request.getScheme());
+        doLog("serverName", request.getServerName());
+        doLog("serverPort", Integer.valueOf(request.getServerPort()).toString());
         
         if (hRequest == null) {
-            doLog("       servletPath", NON_HTTP_REQ_MSG);
+            doLog("servletPath", NON_HTTP_REQ_MSG);
         } else {
-            doLog("       servletPath", hRequest.getServletPath());
+            doLog("servletPath", hRequest.getServletPath());
         }
         
-        doLog("          isSecure",
+        doLog("isSecure",
                 Boolean.valueOf(request.isSecure()).toString());
         doLog("------------------",
                 "--------------------------------------------");
 
         // Perform the request
-		processFilter(RequestDumperFilter.class, hRequest, hResponse, filterChain);
+		processFilter(RequestLoggerFilter.class, hRequest, hResponse, filterChain);
 
         // Log post-service information
         doLog("------------------",
                 "--------------------------------------------");
         if (hRequest == null) {
-            doLog("          authType", NON_HTTP_REQ_MSG);
+            doLog("authType", NON_HTTP_REQ_MSG);
         } else {
-            doLog("          authType", hRequest.getAuthType());
+            doLog("authType", hRequest.getAuthType());
         }
         
-        doLog("       contentType", response.getContentType());
+        doLog("contentType", response.getContentType());
         
         if (hResponse == null) {
-            doLog("            header", NON_HTTP_RES_MSG);
+            doLog("header", NON_HTTP_RES_MSG);
         } else {
         	if (doesServletContainerSupportServletAPI_3_0(sc)) {
                 Iterable<String> rhnames = hResponse.getHeaderNames();
                 for (String rhname : rhnames) {
                     Iterable<String> rhvalues = hResponse.getHeaders(rhname);
                     for (String rhvalue : rhvalues)
-                        doLog("            header", rhname + "=" + rhvalue);
+                        doLog("header", rhname + "=" + rhvalue);
                 }
         	} else {
         		doLog("Unable to log response headers; Servlet Container does not support Servlet API 3.0.", StringPool.BLANK);
@@ -293,24 +288,23 @@ public class RequestDumperFilter extends au.com.permeance.liferay.portal.kernel.
         }
 
         if (hRequest == null) {
-            doLog("        remoteUser", NON_HTTP_REQ_MSG);
+            doLog("remoteUser", NON_HTTP_REQ_MSG);
         } else {
-            doLog("        remoteUser", hRequest.getRemoteUser());
+            doLog("remoteUser", hRequest.getRemoteUser());
         }
         
         if (hResponse == null) {
-            doLog("        remoteUser", NON_HTTP_RES_MSG);
+            doLog("remoteUser", NON_HTTP_RES_MSG);
         } else {
-            doLog("            status",
-                    Integer.valueOf(hResponse.getStatus()).toString());
+            doLog("status", Integer.valueOf(hResponse.getStatus()).toString());
         }
 
-        doLog("END TIME          ", getTimestamp());
+        doLog("FILTER END TIME", getTimestamp());
         doLog("==================",
                 "============================================");
         
 		if (getLog().isInfoEnabled()) {
-			getLog().info("End filter for request dumper at URL " + completeURL);
+			getLog().info("End filter for request logger at URL " + completeURL);
 		} 
 	}
 	
