@@ -30,11 +30,9 @@ The Request Logger Valve in Apache Tomcat 6.x (TC 6.x) was replaced by the Reque
 * Liferay Portal 6.1 CE : 6.1 CE GA2, GA3 (6.1.1+)
 * Liferay Portal 6.1 CE : 6.1 EE GA2, GA3 (6.1.20+)
 
-
 ## Downloads
 
-The latest release is available from [SourceForge - Liferay Request Logger](https://sourceforge.net/projects/permeance-apps/files/liferay-request-logger/ "Liferay Request Logger").
-
+The latest releases are available from [SourceForge - Liferay Request Logger](https://sourceforge.net/projects/permeance-apps/files/liferay-request-logger/ "Liferay Request Logger").
 
 ## Usage
 
@@ -48,8 +46,9 @@ Add or update logging category for RequestLoggerFilter using the Liferay Portal 
 
 * Add or update log category for RequestLoggerFilter
 
-    Category Name: au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter
-    Log Level: ALL
+     Category Name: au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter
+
+     Log Level: ALL
 
 * NOTE: This approach is temporary and is only active while the Liferay Portal instance is running.
 
@@ -59,20 +58,11 @@ Add or update logging category for RequestLoggerFilter using the Liferay Portal 
 
 * Refer to sample [portal-log4j-ext.xml](conf/liferay-portal/tomcat/lib/ext/META-INF/portal-log4j-ext.xml "portal-log4j-ext.xml") and associated [log4j.dtd](conf/liferay-portal/tomcat/lib/ext/META-INF/log4j.dtd "log4j.dtd"), which should be copied to folder “LIFERAY_HOME/tomcat/lib/ext/META-INF”.
 
-    <?xml version="1.0"?>
-    <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+`    <category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter">`
 
-    <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
+`        <priority value="ALL" />`
 
-    . . .
-
-            <category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter">
-                    <priority value="ALL" />
-            </category>
-
-    . . .
-
-    </log4j:configuration>
+`    </category>`
 
 * NOTE: This approach is persistent and will remain between stopping and starting the Liferay Portal instance.
 
@@ -80,17 +70,19 @@ Add or update logging category for RequestLoggerFilter using the Liferay Portal 
 
 * Create or update file “LIFERAY_HOME/portal-ext.properties”.
 
-    # Enable RequestLoggerFilter
-    au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter=true
+* Enable RequestLoggerFilter
 
-    # Disable RequestLoggerFilter
-    au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter=false
+     au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter=true
+
+* Disable RequestLoggerFilter
+
+     au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter=false
 
 ### Step 3. Deploy Liferay Request Logger hook plugin to Liferay Portal
 
-eg. Liferay Portal + Apache Tomcat Bundle
+* Deploy to Liferay Portal + Apache Tomcat Bundle
 
-    % cp liferay-request-logger-hook-XXX.war LIFERAY_HOME/deploy
+     % cp liferay-request-logger-hook-XXX.war LIFERAY_HOME/deploy
 
 ### Step 4. Review Liferay Portal and/or Apache Tomcat log files.
 
@@ -190,4 +182,3 @@ This will build "liferay-request-logger-hook-XXX.war" in the “target” folder
  * http://grepcode.com/file/repo1.maven.org/maven2/org.apache.tomcat.embed/tomcat-embed-core/7.0.0/org/apache/catalina/filters/RequestLoggerFilter.java
  * http://www.liferay.com/documentation/liferay-portal/6.1/development/-/ai/other-hooks
  * https://github.com/liferay/liferay-plugins/tree/master/hooks/sample-servlet-filter-hook
-
