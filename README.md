@@ -2,11 +2,11 @@
 
 *liferay-request-logger*
 
-The Liferay Request Logger logs all HTTP web requests and responses to and from Liferay Portal using the Liferay Portal logging framework.
+The Liferay Request Logger filters all HTTP web requests and responses to and from Liferay Portal and logs the data via the Liferay Portal logging framework.
 
 ## Overview
 
-The Liferay Request Logger outputs all HTTP web requests and responses to and from Liferay Portal using the Liferay Portal logging framework.
+The Liferay Request Logger filters all HTTP web requests and responses to and from Liferay Portal and logs the data via the Liferay Portal logging framework.
 
 The HTTP web requests and responses are processed using the Liferay Request Logger Filter which is based on the [Apache Tomcat 7.x Request Dumper Filter](http://tomcat.apache.org/tomcat-7.0-doc/config/filter.html#Request_Dumper_Filter "The Request Dumper Filter is based on the [Apache Tomcat 7.x Request Logger Filter") and implemented using the Liferay Portal 6.1.x Servlet Filter framework.
 
