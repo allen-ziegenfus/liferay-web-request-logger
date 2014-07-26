@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<!DOCTYPE hook PUBLIC "-//Liferay//DTD Hook 6.1.0//EN" "http://www.liferay.com/dtd/liferay-hook_6_2_0.dtd">
+<!DOCTYPE hook PUBLIC "-//Liferay//DTD Hook 6.2.0//EN" "http://www.liferay.com/dtd/liferay-hook_6_2_0.dtd">
 
 <hook>
 	<servlet-filter>
-		<servlet-filter-name>Request Dumper Filter</servlet-filter-name>
-		<servlet-filter-impl>au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter</servlet-filter-impl>
+		<servlet-filter-name>Request Logger Filter</servlet-filter-name>
+		<servlet-filter-impl>au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter-mapping>
-		<servlet-filter-name>Request Dumper Filter</servlet-filter-name>	
+		<servlet-filter-name>Request Logger Filter</servlet-filter-name>	
 		<after-filter>Strip Filter</after-filter>
 		<url-pattern>/group/*</url-pattern>
 		<url-pattern>/user/*</url-pattern>
@@ -16,4 +16,3 @@
 		<dispatcher>FORWARD</dispatcher>
 	</servlet-filter-mapping>
 </hook>
-
