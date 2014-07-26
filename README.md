@@ -58,11 +58,14 @@ Add or update logging category for RequestLoggerFilter using the Liferay Portal 
 
 * Refer to sample [portal-log4j-ext.xml](conf/liferay-portal/tomcat/lib/ext/META-INF/portal-log4j-ext.xml "portal-log4j-ext.xml") and associated [log4j.dtd](conf/liferay-portal/tomcat/lib/ext/META-INF/log4j.dtd "log4j.dtd"), which should be copied to folder “LIFERAY_HOME/tomcat/lib/ext/META-INF”.
 
-`    <category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter">`
+* Sample portal-log-ext.xml file snippet
 
-`        <priority value="ALL" />`
+    &lt;category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter"&gt;
+        
+    &lt;priority value="ALL" /&gt;
+        
+    &lt;/category&gt;
 
-`    </category>`
 
 * NOTE: This approach is persistent and will remain between stopping and starting the Liferay Portal instance.
 
