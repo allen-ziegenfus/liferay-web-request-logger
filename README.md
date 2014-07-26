@@ -16,7 +16,7 @@ The Request Logger Filter is compatible with Servlet Containers supporting Servl
 
 ### Background
 
-The Request Logger Valve in Apache Tomcat 6.x (TC 6.x) was replaced by the Request Dumper Filter in Apache Tomcat 7.x (TC 7.x). The Request Logger Valve (TC 6.x) worked seamlessly with Liferay Portal 6.0.x, but the Request Logger Filter (TC 7.x) does not work with Liferay Portal 6.1.x, hence the need for the Liferay Request Logger Filter.
+The Request Dumper Valve in Apache Tomcat 6.x (TC 6.x) was replaced by the Request Dumper Filter in Apache Tomcat 7.x (TC 7.x). The Request Logger Valve (TC 6.x) worked seamlessly with Liferay Portal 6.0.x, but the Request Dumper Filter (TC 7.x) does not work with Liferay Portal 6.1.x, hence the need for the Liferay Request Logger Filter.
 
 ## Supported Products
 
