@@ -46,9 +46,9 @@ Add or update logging category for RequestLoggerFilter using the Liferay Portal 
 
 * Add or update log category for RequestLoggerFilter
 
-** Category Name: au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter
+    Category Name: au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter
 
-** Log Level: ALL
+    Log Level: ALL
 
 * NOTE: This approach is temporary and is only active while the Liferay Portal instance is running.
 
@@ -60,17 +60,12 @@ Add or update logging category for RequestLoggerFilter using the Liferay Portal 
 
     <?xml version="1.0"?>
     <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-
     <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
-
     . . .
-
             <category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter">
                     <priority value="ALL" />
             </category>
-
     . . .
-
     </log4j:configuration>
 
 * NOTE: This approach is persistent and will remain between stopping and starting the Liferay Portal instance.
