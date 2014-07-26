@@ -12,7 +12,7 @@
     </parent>
 
 	<groupId>au.com.permeance.utility</groupId>
-	<artifactId>liferay-request-dumper-hook</artifactId>
+	<artifactId>liferay-request-logger-hook</artifactId>
 	<version>1.0.1.1</version>
 	<packaging>war</packaging>
 
@@ -97,8 +97,8 @@
 		<name>Permeance Technologies</name>
 		<url>http://www.permeance.com.au</url>
 	</organization>
-	<name>Liferay Request Dumper Hook Plugin</name>
-	<description>Liferay Portal request dumper hook plugin which provides a servlet filter to log all web requests and responses via the Liferay Portal logging framework.</description>
+	<name>Liferay Request Logger Hook Plugin</name>
+	<description>The Liferay Request Logger hook plugin logs all HTTP web requests and responses to Liferay Portal via the Liferay Portal logging framework.</description>
 	<url>https://github.com/permeance/liferay-request-dumper</url>
 </project>
 

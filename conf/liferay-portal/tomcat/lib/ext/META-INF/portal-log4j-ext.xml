@@ -31,7 +31,7 @@
 		<priority value="ALL" />
 	</category>
 
-	<category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestDumperFilter">
+	<category name="au.com.permeance.liferay.portal.servlet.filters.request.RequestLoggerFilter">
 		<priority value="ALL" />
 	</category>
 
