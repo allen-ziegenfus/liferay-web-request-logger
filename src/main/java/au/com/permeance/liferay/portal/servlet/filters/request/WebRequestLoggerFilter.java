@@ -32,14 +32,15 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * Request Logger Filter.
+ * Web Request Logger Filter.
  * 
- * The Request Logger Filter is based on the Apache Tomcat 7.x Request Dumper Filter 
- * and implemented using the Liferay Portal 6.1.x Servlet Filter framework.
- * It logs messages via the Liferay Portal 6.1.x logging framework.
+ * The Web Request Logger Filter is based on the Apache Tomcat 7.x Request Dumper Filter. 
+ * It is integrated with the Liferay Portal 6.1.x Servlet Filter framework
+ * and logs messages via the Liferay Portal 6.1.x logging framework.
  * 
- * This Request Logger Filter was developed to work around classloading and logging configuration
- * issues with using the default Apache Tomcat 7.x Request Dumper Filter with Liferay Portal 6.1.x. 
+ * This Web Request Logger Filter was developed to work around class/resource loading 
+ * and logging configuration issues using the Apache Tomcat 7.x Request Dumper Filter 
+ * with Liferay Portal 6.1.x. 
  * 
  * @author Craig R. McClanahan
  * @author Tim Telcik <tim.telcik@permeance.com.au>
@@ -52,9 +53,9 @@ import javax.servlet.http.HttpServletResponse;
  * @see https://tomcat.apache.org/tomcat-7.0-doc/api/org/apache/catalina/filters/RequestDumperFilter.html
  * @see BasePortalFilter
  */
-public class RequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.servlet.BasePortalFilter {
+public class WebRequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.servlet.BasePortalFilter {
 
-	public static final String SKIP_FILTER = RequestLoggerFilter.class.getName() + "SKIP_FILTER";
+	public static final String SKIP_FILTER = WebRequestLoggerFilter.class.getName() + "SKIP_FILTER";
 	
     private static final String NON_HTTP_REQ_MSG = "Not available. Non-HTTP request.";
     
@@ -73,7 +74,7 @@ public class RequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.
 	};
 	
 	
-	public RequestLoggerFilter() {
+	public WebRequestLoggerFilter() {
 		super();
 	}
 
@@ -85,7 +86,7 @@ public class RequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.
 		boolean filterEnabled = false;
 		
 		if (isAlreadyFiltered(request)) {
-			getLog().info("Request already filtered; skip");
+			getLog().info("Request already filtered; ignore");
 			filterEnabled = false;
 		}
 		else {
@@ -111,7 +112,7 @@ public class RequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.
 	/**
 	 * This processFilter method is derived from 
 	 * the Apache Tomcat RequestDumperFilter#doFilter(ServletRequest,ServletResponse,FilterChain)
-	 * and merged with the Liferay Porta servlet filter framework.
+	 * and merged with the Liferay Portal 6.1.x Servlet Filter framework.
 	 * 
 	 * @see http://grepcode.com/file/repo1.maven.org/maven2/org.apache.tomcat.embed/tomcat-embed-core/7.0.0/org/apache/catalina/filters/RequestDumperFilter.java
 	 */
@@ -137,7 +138,7 @@ public class RequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.
 		String completeURL = HttpUtil.getCompleteURL(request);
 		
 		if (getLog().isInfoEnabled()) {
-			getLog().info("Start filter for request logger at URL " + completeURL);
+			getLog().info("Start filter for web request logger at URL " + completeURL);
 		}
 		
         // Log pre-service information
@@ -259,7 +260,7 @@ public class RequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.
                 "--------------------------------------------");
 
         // Perform the request
-		processFilter(RequestLoggerFilter.class, hRequest, hResponse, filterChain);
+		processFilter(WebRequestLoggerFilter.class, hRequest, hResponse, filterChain);
 
         // Log post-service information
         doLog("------------------",
@@ -300,14 +301,15 @@ public class RequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.
         }
 
         doLog("FILTER END TIME", getTimestamp());
+        
         doLog("==================",
                 "============================================");
         
-		if (getLog().isInfoEnabled()) {
-			getLog().info("End filter for request logger at URL " + completeURL);
+		if (getLog().isInfoEnabled()) {		
+			getLog().info("End filter for web request logger at URL " + completeURL);			
 		} 
 	}
-	
+
 	
     private void doLog(String attribute, String value) {
         StringBuilder sb = new StringBuilder(80);
