@@ -32,7 +32,8 @@ The Web Request Logger Filter was developed to work around class/resource loadin
 
 ## Downloads
 
-The latest releases are available from [SourceForge - Liferay Web Request Logger](https://sourceforge.net/projects/permeance-apps/files/liferay-web-request-logger/ "Liferay Web Request Logger").
+* [Liferay Marketplace - Web Request Logger](https://www.liferay.com/marketplace/-/mp/application/40746340/ "Web Request Logger")
+* [SourceForge - Liferay Web Request Logger](https://sourceforge.net/projects/permeance-apps/files/liferay-web-request-logger/ "Liferay Web Request Logger")
 
 ## Usage
 
