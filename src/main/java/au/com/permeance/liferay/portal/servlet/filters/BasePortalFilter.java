@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -12,14 +12,13 @@
  * details.
  */
 
-package au.com.permeance.liferay.portal.kernel.servlet;
+package au.com.permeance.liferay.portal.servlet.filters;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.BaseFilter;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
-
-
 
 /**
  * @author Brian Wing Shun Chan
@@ -41,9 +40,8 @@ public abstract class BasePortalFilter extends BaseFilter {
 		return _log;
 	}
 
-	private Log _log = LogFactoryUtil.getLog(getClass());
-
 	private boolean _filterEnabled = GetterUtil.getBoolean(
 		PropsUtil.get(getClass().getName()), true);
+	private final Log _log = LogFactoryUtil.getLog(getClass());
 
 }

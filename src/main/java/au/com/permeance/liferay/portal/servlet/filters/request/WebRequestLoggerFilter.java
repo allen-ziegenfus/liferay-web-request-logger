@@ -15,7 +15,7 @@
 
 package au.com.permeance.liferay.portal.servlet.filters.request;
 
-import au.com.permeance.liferay.portal.kernel.servlet.BasePortalFilter;
+import au.com.permeance.liferay.portal.servlet.filters.BasePortalFilter;
 
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -53,7 +53,7 @@ import javax.servlet.http.HttpServletResponse;
  * @see https://tomcat.apache.org/tomcat-7.0-doc/api/org/apache/catalina/filters/RequestDumperFilter.html
  * @see BasePortalFilter
  */
-public class WebRequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.servlet.BasePortalFilter {
+public class WebRequestLoggerFilter extends au.com.permeance.liferay.portal.servlet.filters.BasePortalFilter {
 
 	public static final String SKIP_FILTER = WebRequestLoggerFilter.class.getName() + "SKIP_FILTER";
 	
