@@ -22,7 +22,7 @@ The Web Request Logger Filter was developed to work around class/resource loadin
 
 ### GitHub Project Branch 7.0.x
 
-* Liferay Portal 7.0 CE : 7.0 CE M4 (7.0.0+)
+* Liferay Portal 7.0 CE : 7.0 CE A1 (7.0.0+)
 
 ### GitHub Project Master and Branch 6.2.x
 
