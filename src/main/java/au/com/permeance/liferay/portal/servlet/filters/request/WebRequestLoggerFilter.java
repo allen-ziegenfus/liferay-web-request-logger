@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014-2015 Permeance Technologies
+ * Copyright (C) 2014 to present Permeance Technologies. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -15,11 +15,6 @@
 
 package au.com.permeance.liferay.portal.servlet.filters.request;
 
-import au.com.permeance.liferay.portal.servlet.filters.BasePortalFilter;
-
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.StringPool;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
@@ -29,6 +24,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.StringPool;
+
+import au.com.permeance.liferay.portal.servlet.filters.BasePortalFilter;
 
 
 /**
@@ -260,7 +260,7 @@ public class WebRequestLoggerFilter extends au.com.permeance.liferay.portal.serv
                 "--------------------------------------------");
 
         // Perform the request
-		processFilter(WebRequestLoggerFilter.class, hRequest, hResponse, filterChain);
+        processFilter(WebRequestLoggerFilter.class.getName(), hRequest, hResponse, filterChain);
 
         // Log post-service information
         doLog("------------------",
