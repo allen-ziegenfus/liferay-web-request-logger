@@ -59,15 +59,15 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 		immediate = true,
 		property = {
-				"before-filter=Valid Host Name Filter",
-				"servlet-context-name=",
-				"servlet-filter-name=Permeance Liferay Web Request Logging Filter",	
-                "after-filter=Strip Fiter",
-				"dispatcher=REQUEST",
-				"dispatcher=FORWARD",
-				"url-pattern=/group/*",
-                "url-pattern=/user/*",
-                "url-pattern=/web/*"
+            "before-filter=Valid Host Name Filter",
+            "servlet-context-name=",
+            "servlet-filter-name=Permeance Liferay Web Request Logging Filter",	
+            "after-filter=Strip Fiter",
+            "dispatcher=REQUEST",
+            "dispatcher=FORWARD",
+            "url-pattern=/group/*",
+            "url-pattern=/user/*",
+            "url-pattern=/web/*"
 		},
 		service = Filter.class
 	)
