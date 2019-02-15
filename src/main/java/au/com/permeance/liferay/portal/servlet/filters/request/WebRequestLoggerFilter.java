@@ -15,20 +15,22 @@
 
 package au.com.permeance.liferay.portal.servlet.filters.request;
 
-import au.com.permeance.liferay.portal.kernel.servlet.BasePortalFilter;
-
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.servlet.filters.BasePortalFilter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.osgi.service.component.annotations.Component;
 
 
 /**
@@ -53,7 +55,22 @@ import javax.servlet.http.HttpServletResponse;
  * @see https://tomcat.apache.org/tomcat-7.0-doc/api/org/apache/catalina/filters/RequestDumperFilter.html
  * @see BasePortalFilter
  */
-public class WebRequestLoggerFilter extends au.com.permeance.liferay.portal.kernel.servlet.BasePortalFilter {
+@Component(
+		immediate = true,
+		property = {
+				"before-filter=Valid Host Name Filter",
+				"servlet-context-name=",
+				"servlet-filter-name=Permeance Liferay Web Request Logging Filter",	
+                "after-filter=Strip Fiter",
+				"dispatcher=REQUEST",
+				"dispatcher=FORWARD",
+				"url-pattern=/group/*",
+                "url-pattern=/user/*",
+                "url-pattern=/web/*"
+		},
+		service = Filter.class
+	)
+public class WebRequestLoggerFilter extends BasePortalFilter {
 
 	public static final String SKIP_FILTER = WebRequestLoggerFilter.class.getName() + "SKIP_FILTER";
 	
@@ -260,7 +277,7 @@ public class WebRequestLoggerFilter extends au.com.permeance.liferay.portal.kern
                 "--------------------------------------------");
 
         // Perform the request
-		processFilter(WebRequestLoggerFilter.class, hRequest, hResponse, filterChain);
+		processFilter(getClass().getName(),hRequest, hResponse, filterChain);
 
         // Log post-service information
         doLog("------------------",

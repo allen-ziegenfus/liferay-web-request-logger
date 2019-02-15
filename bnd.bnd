@@ -1,0 +1,3 @@
+Bundle-Name: Permeance Liferay Web Request Filter
+Bundle-SymbolicName: au.com.permeance.liferay.portal.servlet.filters
+Bundle-Version: 1.0.0
