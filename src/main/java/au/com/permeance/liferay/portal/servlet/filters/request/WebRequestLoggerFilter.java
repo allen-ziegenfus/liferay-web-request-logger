@@ -22,16 +22,17 @@ import com.liferay.portal.servlet.filters.BasePortalFilter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Locale;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
-
 
 /**
  * Web Request Logger Filter.
@@ -161,6 +162,15 @@ public class WebRequestLoggerFilter extends BasePortalFilter {
         // Log pre-service information
         doLog("FILTER START TIME", getTimestamp());
         
+        HttpSession session = request.getSession();
+
+        if (session != null) {
+		    Locale locale = (Locale)session.getAttribute("org.apache.struts.action.LOCALE");
+            if (locale != null) {
+                   doLog("sessionLocale", ""+locale.toLanguageTag());
+            }
+        }
+
         if (sc != null) {
             doLog("servletContext.serverInfo", ""+sc.getServerInfo());
             doLog("servletContext.majorVersion", ""+sc.getMajorVersion());
